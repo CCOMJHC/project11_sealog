@@ -1,0 +1,7 @@
+<launch>
+  <arg name="namespace" default="ben"/>
+  <node pkg="project11_sealog" type="sealog_telemetry_sender.py" name="sealog_telemetry_sender" ns="$(arg namespace)">
+    <param name="host" value="localhost"/>
+    <param name="port" value="12345"/>
+  </node>
+</launch>
