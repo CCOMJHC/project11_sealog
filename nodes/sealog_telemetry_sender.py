@@ -28,7 +28,7 @@ def odometryCallback( data):
 
     try:
       ts = datetime.datetime.utcfromtimestamp(data.header.stamp.to_sec())
-
+      #print("odom frame_id:", data.header.frame_id)
       odom_to_earth = tfBuffer.lookup_transform("earth", data.header.frame_id, data.header.stamp, rospy.Duration(period))
       ecef = do_transform_pose(data.pose, odom_to_earth).pose.position
       position = project11.wgs84.fromECEFtoLatLong(ecef.x, ecef.y, ecef.z)
@@ -42,7 +42,7 @@ def odometryCallback( data):
       sog = math.sqrt(data.twist.twist.linear.x**2 + data.twist.twist.linear.y**2)
 
       data_string = ','.join((ts.isoformat(), str(lat), str(lon), str(heading), str(cog), str(sog)))
-      print (data_string)
+      #print (data_string)
       outsock.sendto((data_string+'\n').encode('utf-8'), (host,port))
     except Exception as e:
       print(e)
